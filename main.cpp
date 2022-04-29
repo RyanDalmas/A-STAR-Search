@@ -7,8 +7,15 @@
 using namespace std;
 
 int main(int argc, char **argv) {
-    cout << "Hello world \n";
-    //system("pause");
+
+
+
+
+
+
+    
+    cout << "\n\n\n\n";
+    system("pause");
     return 0;
 }
 

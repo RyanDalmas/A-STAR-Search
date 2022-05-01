@@ -1,0 +1,9 @@
+========================================
+               ALGORITHMS
+________________________________________
+           Select an Algorithm
+
+        (1) Uniform Cost Search
+        (2) A* with the MTH
+        (3) A* with the EDH
+========================================

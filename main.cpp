@@ -3,12 +3,26 @@
 
 #include <string>
 #include <iostream>
-
-using namespace std;
+#include "cl-parser.cpp"
+#include "puzzle.cpp"
+#include <regex>
 
 int main(int argc, char **argv) {
-    cout << "Hello world \n";
-    //system("pause");
+
+    CLParser* parser = new CLParser();
+
+    Puzzle* puzzle = parser->puzzleFactory(parser->readPuzzle());
+
+    std::cout << std::endl << "Puzzle: " << std::endl;
+    puzzle->print();
+
+    std::cout << "\n \n \n \n";
+    std::cin.clear();
+    system("pause");
+
+    delete puzzle;
+    delete parser;
+
     return 0;
 }
 

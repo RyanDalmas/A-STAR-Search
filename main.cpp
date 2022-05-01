@@ -29,6 +29,8 @@ int main(int argc, char **argv)
 
         std::cout << "PATH: " << path->getPath() << std::endl;
         std::cout << "Depth: " << path->getDepth() << std::endl;
+        std::cout << "Max Queue: " << path->getMaxQ() << std::endl;
+        std::cout << "Nodes Expanded " << path->getNodeCount() << std::endl;
 
         system("pause");
     }

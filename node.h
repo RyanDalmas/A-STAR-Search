@@ -10,6 +10,8 @@ private:
     Puzzle state;
     int priority;
     int depth;
+    int nodeCount;
+    int maxQ;
 
     Node *prev;
     std::vector<Node *> next;
@@ -35,6 +37,22 @@ public:
 
     std::string getPath() {
         return this->Steps;
+    }
+
+    void setNodeCount(int input) {
+        this->nodeCount = input;
+    }
+
+    int getMaxQ() {
+        return this->maxQ;
+    }
+
+    void setMaxQ(int input) {
+        this->maxQ = input;
+    }
+
+    int getNodeCount() {
+        return this->nodeCount;
     }
 
     void setPriority(int input);

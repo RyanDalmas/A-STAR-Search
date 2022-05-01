@@ -19,6 +19,8 @@ bool contains(std::vector<Node *> set, Node *input)
 Node *AlgorithmEngine::a_star_search(Puzzle *init_state, Puzzle *goal_state)
 {
     this->selectHeuristic();
+    
+    int maxQ = 0, nodeCount = 0;
 
     std::priority_queue<Node *, std::vector<Node*>, std::greater<Node*>> frontier;
 
@@ -48,6 +50,8 @@ Node *AlgorithmEngine::a_star_search(Puzzle *init_state, Puzzle *goal_state)
     {
         std::cout << "\rComputing";
 
+        if(frontier.size() > maxQ) maxQ = frontier.size();
+
         for(int i = 0; i < frontier.size()%5; i++) std::cout << ".";
 
         if (frontier.empty())
@@ -62,6 +66,10 @@ Node *AlgorithmEngine::a_star_search(Puzzle *init_state, Puzzle *goal_state)
 
         Node *leaf = frontier.top();
         frontier.pop();
+        nodeCount++;
+
+        leaf->setMaxQ(maxQ);
+        leaf->setNodeCount(nodeCount);
         
         for(int i = 0; i < f_set.size(); i++) {
             if(f_set[i]->getState().getPuzzle() == leaf->getState().getPuzzle())

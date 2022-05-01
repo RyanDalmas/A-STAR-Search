@@ -5,6 +5,7 @@
 #include <cmath>
 #include <queue>
 #include <vector>
+#include <algorithm>
 
 bool contains(std::vector<Node *> set, Node *input)
 {
@@ -22,13 +23,10 @@ Node *AlgorithmEngine::a_star_search(Puzzle *init_state, Puzzle *goal_state)
     
     int maxQ = 0, nodeCount = 0;
 
-    std::priority_queue<Node *, std::vector<Node*>, std::greater<Node*>> frontier;
-
     std::vector<Node *> explored_set, solution_set, f_set;
 
     Node *head = new Node(*init_state, this->heuristic(*init_state, *goal_state), 0);
 
-    frontier.push(head);
     f_set.push_back(head);
 
     int minDepth = INT_MAX;
@@ -42,30 +40,35 @@ Node *AlgorithmEngine::a_star_search(Puzzle *init_state, Puzzle *goal_state)
     goal_state->print();
 
     system("pause");
+    std::cout << "Computing...";
 
     if (DEBUG)
         std::cout << "Algorithm Initialized. Loop will begin." << std::endl;
 
     do
     {
-        std::cout << "\rComputing";
+        if(f_set.size() > maxQ) maxQ = f_set.size();
 
-        if(frontier.size() > maxQ) maxQ = frontier.size();
-
-        for(int i = 0; i < frontier.size()%5; i++) std::cout << ".";
-
-        if (frontier.empty())
+        if (f_set.empty())
         {
             if (DEBUG)
                 std::cout << "Frontier is empty, failed." << std::endl;
             return nullptr;
         }
-
-        //std::cout << "Frontier Size: " << frontier.size() << " | " << solution_set.size() << std::endl;
         
 
-        Node *leaf = frontier.top();
-        frontier.pop();
+        Node *leaf = f_set[0];
+        int Index = 0;
+
+        for(int i = 0; i < f_set.size(); i++) {
+            if(f_set[i]->getPriority() < leaf->getPriority()) {
+                leaf = f_set[i];
+                Index = i;
+            }
+        }
+
+        f_set.erase(f_set.begin()+Index);
+
         nodeCount++;
 
         leaf->setMaxQ(maxQ);
@@ -85,6 +88,10 @@ Node *AlgorithmEngine::a_star_search(Puzzle *init_state, Puzzle *goal_state)
             if(leaf->getDepth() <= minDepth) minDepth = leaf->getDepth();
             if (DEBUG)
                 std::cout << "Goal state found." << std::endl;
+
+            std::remove_if(f_set.begin(), f_set.end(), [](Node* i){
+                return true;
+            });
         }
         explored_set.push_back(leaf);
 
@@ -118,7 +125,7 @@ Node *AlgorithmEngine::a_star_search(Puzzle *init_state, Puzzle *goal_state)
 
             if (!contains(explored_set, t) && !contains(f_set, t) && leaf->getDepth() <= minDepth)
             {
-                frontier.push(t);
+                f_set.push_back(t);
                 t->appendPath("<, ");
                 if (DEBUG)
                     std::cout << "MOVE RIGHT." << std::endl;
@@ -132,7 +139,7 @@ Node *AlgorithmEngine::a_star_search(Puzzle *init_state, Puzzle *goal_state)
 
             if (!contains(explored_set, t) && !contains(f_set, t) && leaf->getDepth() <= minDepth)
             {
-                frontier.push(t);
+                f_set.push_back(t);
                 t->appendPath(">, ");
                 if (DEBUG)
                     std::cout << "MOVE LEFT." << std::endl;
@@ -146,7 +153,7 @@ Node *AlgorithmEngine::a_star_search(Puzzle *init_state, Puzzle *goal_state)
 
             if (!contains(explored_set, t) && !contains(f_set, t) && leaf->getDepth() <= minDepth)
             {
-                frontier.push(t);
+                f_set.push_back(t);
                 t->appendPath("v, ");
                 if (DEBUG)
                     std::cout << "MOVE UP." << std::endl;
@@ -160,7 +167,7 @@ Node *AlgorithmEngine::a_star_search(Puzzle *init_state, Puzzle *goal_state)
 
             if (!contains(explored_set, t) && !contains(f_set, t) && leaf->getDepth() <= minDepth)
             {
-                frontier.push(t);
+                f_set.push_back(t);
                 t->appendPath("^, ");
                 if (DEBUG)
                     std::cout << "MOVE DOWN." << std::endl;
@@ -170,7 +177,7 @@ Node *AlgorithmEngine::a_star_search(Puzzle *init_state, Puzzle *goal_state)
         if (DEBUG)
             std::cout << leaf->getNext().size() << " nodes expanded." << std::endl;
 
-    } while (!frontier.empty());
+    } while (!f_set.empty());
 
     system("CLS");
 

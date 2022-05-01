@@ -23,9 +23,11 @@ int main(int argc, char **argv)
     {
         Node *path = engine.a_star_search(initial_state, goal_state);
 
-        std::cout << "SOLUTION ->" << std::endl;
+        std::cout << "SOLUTION:" << std::endl;
 
-        path->getState().print();
+        initial_state->print();
+        std::cout << "- - - - -" << std::endl;
+        goal_state->print();
 
         std::cout << "PATH: " << path->getPath() << std::endl;
         std::cout << "Depth: " << path->getDepth() << std::endl;

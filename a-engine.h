@@ -5,19 +5,21 @@
 #include "Node.cpp"
 #include <string>
 #include <fstream>
+#include <regex>
 
 class AlgorithmEngine
 {
 
 private:
-    int (AlgorithmEngine::*heuristic)(Puzzle a, Puzzle b);
+    int (*heuristic)(Puzzle a, Puzzle b);
+
     std::string selectMenu = "";
     std::string menu_filename = "algorithm_menu.txt";
+    std::string input_regex = "^\\d$";
 
 public:
     AlgorithmEngine()
     {
-        this->selectHeuristic(0);
 
         std::fstream menu_file;
         menu_file.open(this->menu_filename, std::ios::in);
@@ -31,19 +33,32 @@ public:
         }
         menu_file.close();
     }
-    ~AlgorithmEngine();
+    ~AlgorithmEngine() {}
 
-    Node *a_star_search(Puzzle init_state, Puzzle goal_state);
-    void selectHeuristic(int input);
+    std::string getMenu()
+    {
+        return this->selectMenu;
+    }
+
+    int checkFormat(std::string input_string) {
+        if(!std::regex_match(input_string, std::regex(this->input_regex))) return false;
+
+        return input_string == "1" || input_string == "2" || input_string == "3";
+    }
+
+    Node * a_star_search(Puzzle* init_state, Puzzle* goal_state);
+    void selectHeuristic();
 
     // Uniform cost search heuristic
-    int UCS(Puzzle a, Puzzle b);
+    friend int UCS(Puzzle a, Puzzle b);
 
     // Misplaced tile heuristic
-    int MTH(Puzzle a, Puzzle b);
+    friend int MTH(Puzzle a, Puzzle b);
 
     // Euclidean distance heuristic
-    int EDH(Puzzle a, Puzzle b);
+    friend int EDH(Puzzle a, Puzzle b);
+
+    friend bool contains(std::vector<Node*> set, Node* input);
 
     // Print path
     void printPath(Node *head);

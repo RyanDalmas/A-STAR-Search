@@ -8,42 +8,41 @@ class Node
 {
 private:
     Puzzle state;
-    Node *prev;
-    std::vector<Node *> next;
-
+    int priority;
     int depth;
 
+    Node *prev;
+    std::vector<Node *> next;
+    std::string Steps = "";
+
 public:
-    Node(Node *prev, int tile_x, int tile_y, int x_move, int y_move)
-    {
-        this->depth = prev->getDepth() + 1;
+    Node();
+    Node(Puzzle state, int priority, int depth) : state(state), priority(priority), depth(depth) {}
+    Node(Node *prev, int priority, int tile_x, int tile_y, int x_move, int y_move);
+    ~Node();
 
-        this->state = prev->getState();
-        this->state.moveTile(tile_x, tile_y, x_move, y_move);
-    }
-    ~Node() {
-        delete this->prev;
-    }
+    int getDepth() const;
 
-    int getDepth() const
-    {
-        return this->depth;
-    }
+    Node *getPrev() const;
 
-    Node *getPrev() const
-    {
-        return this->prev;
+    std::vector<Node *>& getNext();
+
+    Puzzle getState();
+
+    void appendPath(std::string input) {
+        Steps += input;
     }
 
-    std::vector<Node *> getNext()
-    {
-        return this->next;
+    std::string getPath() {
+        return this->Steps;
     }
 
-    Puzzle getState()
-    {
-        return this->state;
-    }
+    void setPriority(int input);
+
+    const int getPriority() const;
+
+    bool operator<(const Node& b);
+ 
 };
 
 #endif

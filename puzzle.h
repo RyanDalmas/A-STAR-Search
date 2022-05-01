@@ -10,6 +10,7 @@ class Puzzle {
         std::vector<std::vector<int>> puzzle;
 
     public:
+        Puzzle() {}
         // Initialize a blank (all -1's) M x N puzzle
         Puzzle(int Rows, int Cols);
         // Initialize a specific puzzle
@@ -33,6 +34,10 @@ class Puzzle {
 
         // Checks fror valid move, if valid -> perform move
         int moveTile(int tile_x, int tile_y, int move_x, int move_y);
+
+        bool eq(Puzzle& a) const {
+            return this->getPuzzle() == a.getPuzzle();
+        }
         
 };
 

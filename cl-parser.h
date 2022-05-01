@@ -28,7 +28,7 @@ class CLParser {
     std::string getRules();
 
     // Read puzzle from CL
-    const std::string readPuzzle();
+    const std::string readPuzzle(std::string Context, std::string __DEFAULT__);
 
     // Validate format of input puzzle string according to rules.txt
     int checkFormat(std::string InputString);

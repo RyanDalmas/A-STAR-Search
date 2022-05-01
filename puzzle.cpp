@@ -40,7 +40,7 @@ Puzzle::Puzzle(int Rows, int Cols, std::vector<int> oVals) : rows(Rows), cols(Co
     {
         for (int j = 0; j < this->cols; j++)
         {
-            if(Counter < oVals.size()) this->setTile(i, j, oVals[Counter++]);
+            if(Counter < oVals.size()) this->setTile(j, i, oVals[Counter++]);
         }
     }
 }
@@ -55,7 +55,7 @@ int Puzzle::getTile(int tile_x, int tile_y) const
     {
         if (tile_y >= 0 && tile_y < this->rows)
         {
-            return this->puzzle[tile_x][tile_y];
+            return this->puzzle[tile_y][tile_x];
         }
     }
 
@@ -66,7 +66,7 @@ int Puzzle::setTile(int tile_x, int tile_y, int tile_value)
 {
     if (this->getTile(tile_x, tile_y) != -2)
     {
-        this->puzzle[tile_x][tile_y] = tile_value;
+        this->puzzle[tile_y][tile_x] = tile_value;
         return 1;
     }
 
@@ -78,7 +78,7 @@ int Puzzle::isValidMove(int tile_x, int tile_y, int move_x, int move_y) const
     int tile_value = this->getTile(tile_x, tile_y);
     int tile_dest_value = this->getTile(tile_x + move_x, tile_y + move_y);
 
-    return (tile_value != -2) && (tile_dest_value == -1);
+    return ((tile_value != -2) && (tile_dest_value != -2)) && ((tile_value == -1) || (tile_dest_value == -1));
 }
 
 int Puzzle::moveTile(int tile_x, int tile_y, int move_x, int move_y)
@@ -87,8 +87,9 @@ int Puzzle::moveTile(int tile_x, int tile_y, int move_x, int move_y)
         return 0;
 
     // Swap tiles
-    this->puzzle[tile_x + move_x][tile_y + move_y] = this->puzzle[tile_x][tile_y];
-    this->puzzle[tile_x][tile_y] = -1;
+    int temp = this->puzzle[tile_y + move_y][tile_x + move_x];
+    this->puzzle[tile_y + move_y][tile_x + move_x] = this->puzzle[tile_y][tile_x];
+    this->puzzle[tile_y][tile_x] = temp;
 
     return 1;
 }

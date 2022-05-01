@@ -40,7 +40,7 @@ int CLParser::checkFormat(std::string InputString)
     return (check_size.values.size() == (check_size.Cols * check_size.Rows));
 }
 
-const std::string CLParser::readPuzzle()
+const std::string CLParser::readPuzzle(std::string Context, std::string __DEFAULT__)
 {
     std::string InputString;
     unsigned int invalid_format = 0;
@@ -54,10 +54,16 @@ const std::string CLParser::readPuzzle()
             std::cout << "(" << invalid_format << ") "
                       << "ERROR: Invalid Format. \n";
 
-        std::cout << "-> ";
+        if(__DEFAULT__ != "") {
+            std::cout << "(default) '" << __DEFAULT__ << "'" << std::endl << std::endl;
+        }
+
+        std::cout << Context << " -> ";
         std::cin.clear();
         InputString = "";
         std::getline(std::cin, InputString);
+
+        if(InputString == "") InputString = __DEFAULT__;
 
         invalid_format += 1;
     } while (!this->checkFormat(InputString));

@@ -6,22 +6,32 @@
 #include "cl-parser.cpp"
 #include "puzzle.cpp"
 #include <regex>
+#include "a-engine.cpp"
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
 
-    CLParser* parser = new CLParser();
+    CLParser *parser = new CLParser();
 
-    Puzzle* puzzle = parser->puzzleFactory(parser->readPuzzle());
+    Puzzle *initial_state = parser->puzzleFactory(parser->readPuzzle("Initial", "3 3 1 2 3 4 8 -1 7 6 5|"));
 
-    std::cout << std::endl << "Puzzle: " << std::endl;
-    puzzle->print();
+    Puzzle *goal_state = parser->puzzleFactory(parser->readPuzzle("Goal", "3 3 1 2 3 4 5 6 7 8 -1|"));
 
-    std::cout << "\n \n \n \n";
-    std::cin.clear();
-    system("pause");
+    AlgorithmEngine engine = AlgorithmEngine();
 
-    delete puzzle;
-    delete parser;
+    while (true)
+    {
+        Node *path = engine.a_star_search(initial_state, goal_state);
+
+        std::cout << "SOLUTION ->" << std::endl;
+
+        path->getState().print();
+
+        std::cout << "PATH: " << path->getPath() << std::endl;
+        std::cout << "Depth: " << path->getDepth() << std::endl;
+
+        system("pause");
+    }
 
     return 0;
 }

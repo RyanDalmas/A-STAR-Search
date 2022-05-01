@@ -1,0 +1,23 @@
+========================================
+            PUZZLE FACTORY
+________________________________________
+
+                1 2 3
+                4 5 6
+                7 8 *
+            Choose a puzzle                
+          Choose an algorithm
+            Watch it Solve! 
+________________________________________
+
+          Create your Puzzle
+
+        Columns (M) | Rows(N)
+    Values (# # #...) |V| = MxN:
+        left->right, top->bot
+    
+              -1 = blank
+          End input with a |.
+    
+    input format: "M N # # #...|"
+========================================

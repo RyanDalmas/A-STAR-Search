@@ -11,17 +11,21 @@ class Puzzle {
 
     public:
         // Initialize a blank (all -1's) M x N puzzle
-        Puzzle(int Rows, int Cols) : rows(Rows) , cols(Cols) {}
+        Puzzle(int Rows, int Cols);
         // Initialize a specific puzzle
-        Puzzle(int Rows, int Cols, std::vector<int> oVals) : Puzzle(Rows, Cols) {}
+        Puzzle(int Rows, int Cols, std::vector<int> oVals);
 
-        ~Puzzle();
+        //~Puzzle();
 
         // Returns unchangeable copy of puzzle
-        const std::vector<std::vector<int>>* getPuzzle() const ;
+        const std::vector<std::vector<int>> getPuzzle() const ;
+
+        void print();
 
         // Returns value of tile via coordinates
         int getTile(int tile_x, int tile_y) const ;
+
+        // If valid tile, set new value, return value (return -2 if invalid)
         int setTile(int tile_x, int tile_y, int tile_value);
 
         // Returns 1 (TRUE) if input move is legal, 0 (FALSE) if not

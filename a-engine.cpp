@@ -73,11 +73,6 @@ Node *AlgorithmEngine::a_star_search(Puzzle *init_state, Puzzle *goal_state)
 
         leaf->setMaxQ(maxQ);
         leaf->setNodeCount(nodeCount);
-        
-        for(int i = 0; i < f_set.size(); i++) {
-            if(f_set[i]->getState().getPuzzle() == leaf->getState().getPuzzle())
-                f_set.erase(f_set.begin()+i);
-        }
 
         if (DEBUG)
             std::cout << "Frontier popped." << std::endl;
